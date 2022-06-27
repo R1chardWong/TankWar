@@ -1,9 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>pic/icon.png</file>
-        <file>pic/stone.gif</file>
-        <file>pic/wall.gif</file>
-        <file>pic/camp0.gif</file>
-        <file>pic/bg_gray.gif</file>
-    </qresource>
-</RCC>
