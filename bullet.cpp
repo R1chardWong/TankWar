@@ -2,11 +2,16 @@
 #include <QDebug>
 Bullet::Bullet()
 {
+    //设置子弹的宽度，高度和速度
     w = 8;
     h = 12;
     speed = 12;
+    
+    //子弹初始状态
     active = false;
     bump = false;
+    
+    
     leftimg.load((rootdir+"\\pic\\bullet-0.gif").c_str());
     leftimg = resizePic(leftimg,h,w);
 
