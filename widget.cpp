@@ -25,6 +25,20 @@ Widget::Widget(QWidget *parent)
     ice.load((rootdir+"pic\\ice.gif").c_str());
     ice = resizePic(ice,BASESIZE,BASESIZE);
 
+    esc_pressed = true;
+    c1 = new QPushButton("第一关",this);
+    c1->move(100,100);
+    c1->resize(150,50);
+    c1->setStyleSheet("background-color:white");
+    c1->setVisible(false);
+    c2 = new QPushButton("第二关",this);
+    c2->move(350,100);
+    c2->resize(150,50);
+    c2->setStyleSheet("background-color:white");
+    c2->setVisible(false);
+    connect(c1,SIGNAL(clicked()),this,SLOT(setgate1()));
+    connect(c2,SIGNAL(clicked()),this,SLOT(setgate2()));
+
     timer1 = new QTimer(this);
     timer2 = new QTimer(this);
     timer3 = new QTimer(this);
@@ -114,7 +128,10 @@ void Widget::keyPressEvent(QKeyEvent *event)
 
         }
     }
-
+    else if(event->key()==Qt::Key::Key_Escape)
+    {
+        esc_pressed = true;
+    }
 }
 
 void Widget::keyReleaseEvent(QKeyEvent *event)
@@ -295,6 +312,23 @@ void Widget::createEnemy()
     cursor%=18;
 }
 
+void Widget::setgate1()
+{
+    gate = 1;
+    esc_pressed = false;
+    c1->setVisible(false);
+    c2->setVisible(false);
+}
+
+void Widget::setgate2()
+{
+    gate = 2;
+    esc_pressed = false;
+    c1->setVisible(false);
+    c2->setVisible(false);
+}
+
+
 void Widget::loadMap()
 {
     std::ifstream file;
@@ -386,10 +420,24 @@ void Widget::drawStart()
     paint.drawText(12*BASESIZE+10,13*BASESIZE+10,"第"+QString::number(gate)+"关");
 }
 
+void Widget::drawmenu()
+{
+    this->setStyleSheet("background-color:gray;");
+    c1->setVisible(true);
+    c2->setVisible(true);
+}
+
 void Widget::paintEvent(QPaintEvent *)
 {
     paint.begin(this);
 
+    if(esc_pressed)
+    {
+        paint.end();
+        drawmenu();
+        return;
+    }
+    this->setStyleSheet("background-color:black;");
     //画关卡过渡界面
     if(0<start--)
     {

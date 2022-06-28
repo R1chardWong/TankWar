@@ -18,6 +18,7 @@
 #include <fstream>
 #include <iostream>
 #include <memory.h>
+#include <QPushButton>
 //static const int RETCODE_RESTART = 773;
 class Widget : public QWidget
 {
@@ -44,6 +45,10 @@ private:
     QTimer* timer5;
     QTimer* timer6;
 
+    bool esc_pressed;
+    QPushButton* c1;
+    QPushButton* c2;
+
     bool toolExist;
     int toolx,tooly;
     int cursor;
@@ -59,6 +64,7 @@ protected:
     void drawFrame();
     void drawPanel();
     void drawStart();
+    void drawmenu();
     void paintEvent(QPaintEvent *) override;
     void gameOver();
 public:
@@ -77,6 +83,8 @@ public slots:
     void bulletMove();
     void refresh();
     void createTool();
+    void setgate1();
+    void setgate2();
 
 };
 #endif // WIDGET_H
