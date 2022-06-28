@@ -11,7 +11,7 @@ Bullet::Bullet()
     active = false;
     bump = false;
     
-    
+    //加载子弹的图片
     leftimg.load((rootdir+"\\pic\\bullet-0.gif").c_str());
     leftimg = resizePic(leftimg,h,w);
 
@@ -36,28 +36,30 @@ Bullet::Bullet(const Bullet &other)
 
 void Bullet::setActive(bool a)
 {
-    active = a;
+    active = a;//获取子弹状态
     if(active==false)
     {
         bump = true;
         //这里设置偏移量
         int x = rect.x();
         int y = rect.y();
+         //上下方向
         if(dir==direct::up||dir ==direct::down)
         {
-            x-=(BASESIZE-w)/2;
+            x-=(BASESIZE-w)/2;//偏移量，从枪口射出
         }
+        //左右方向
         else if(dir ==direct::left||dir == direct::right)
         {
             y-=(BASESIZE-w)/2;
         }
         bumpx = x;
         bumpy = y;
-        rect.setRect(-1,-1,0,0);
+        rect.setRect(-1,-1,0,0);//设置初值
     }
 }
 
-bool Bullet::getActive()
+bool Bullet::getActive()//获取子弹状态
 {
     return active;
 }
@@ -139,7 +141,6 @@ bool Bullet::canReachable(int x, int y, direct dir)
     }
     else if (dir==direct::down)
     {
-//        y += 1;
         y1 = y;
         x1 = x + 1;
     }
@@ -150,14 +151,12 @@ bool Bullet::canReachable(int x, int y, direct dir)
     }
     else if(dir==direct::right)
     {
-//        x += 1;
         x1 = x;
         y1 = y + 1;
     }
     //判断是否越界
     if(x<0 || x1<0 || x>25 || x1>25 || y<0 || y1<0 || y>25 || y1>25)
     {
-//        qDebug()<<"子弹越界";
         return false;
     }
     //判断是否有障碍物
@@ -172,6 +171,7 @@ bool Bullet::canReachable(int x, int y, direct dir)
         {
             map[y][x]='0';
         }
+        //砖块碎了
         if(map[y1][x1]=='3')
         {
             map[y1][x1]='0';
