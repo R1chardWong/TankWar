@@ -8,8 +8,8 @@
 class Bullet
 {
 private:
-    int speed;
-    bool active;
+    int speed;//子弹速度
+    bool active;//子弹是否在空中
 
 public:
     bool bump;
@@ -24,16 +24,21 @@ public:
     QPixmap rightimg;
     QPixmap bumpPic;
     QRect rect;
-    explicit Bullet();
-    Bullet(const Bullet&);
+    explicit Bullet();//不允许隐式类型转换
+    Bullet(const Bullet&);//新子弹射出
+    
+    
     void setActive(bool);
-    bool getActive();
-    void move();
-    void setDir(direct);
-    void display(QPainter&);
-    bool canReachable(int,int,direct);
+    bool getActive();//获取状态
+    void move();//子弹移动
+    void setDir(direct);//设置子弹方向
+    
+    
+    void display(QPainter&);//显示子弹
+    bool canReachable(int,int,direct);//子弹能否到达目标
     Bullet& operator=(const Bullet&);
-    void showExplosion(QPainter&);
+    
+    void showExplosion(QPainter&);//展示爆炸效果
     ~Bullet();
 };
 
