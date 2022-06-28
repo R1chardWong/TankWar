@@ -25,17 +25,16 @@ Widget::Widget(QWidget *parent)
     ice.load((rootdir+"pic\\ice.gif").c_str());
     ice = resizePic(ice,BASESIZE,BASESIZE);
 
-    esc_pressed = true;
+    esc_pressed = true;//一开始进入游戏，先进入选关界面
     for(int i = 1;i <= 35;++i)
     {
         c[i] = new QPushButton(QString::number(i),this);
         c[i]->resize(75,50);
         c[i]->setStyleSheet("background-color:white");
-        c[i]->setVisible(false);
-        connect(c[i],SIGNAL(clicked()),this,SLOT(setgate()));
         int arrange_h = 10 + 70 * ((i - 1) / 5 + 1);
         int arrange_w = 90 * ((i - 1) % 5 + 1);
         c[i]->move(arrange_w,arrange_h);
+        connect(c[i],SIGNAL(clicked()),this,SLOT(setgate()));
     }
 
 
@@ -131,7 +130,7 @@ void Widget::keyPressEvent(QKeyEvent *event)
     }
     else if(event->key()==Qt::Key::Key_Escape)
     {
-        esc_pressed = true;
+        esc_pressed = true;//游戏中按ESC进入选关界面
     }
 }
 
@@ -406,7 +405,7 @@ void Widget::drawStart()
 
 void Widget::drawmenu()
 {
-
+    //选关界面
     this->setStyleSheet("background-color:gray;");
     for(int i = 1;i <= 35;i++)
         c[i]->setVisible(true);
@@ -416,7 +415,7 @@ void Widget::paintEvent(QPaintEvent *)
 {
     paint.begin(this);
 
-    if(esc_pressed)
+    if(esc_pressed)//进入选关界面
     {
         paint.end();
         drawmenu();
@@ -557,7 +556,7 @@ void Widget::gameOver()
 //        enemies.clear();//线程访问出错
         for(auto it=enemies.begin();it!=enemies.end();it++)
             enemies.erase(it);
-        gate=1;
+        esc_pressed = true;
         init();
     }
     else
@@ -571,6 +570,7 @@ void Widget::setgate()
 {
     for(int i = 1;i <= 35;++i)
     {
+        //判断按下了哪一个按钮，从而选择关卡
         if(c[i]->hasFocus())
         {
             enemies.clear();

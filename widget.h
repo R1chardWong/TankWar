@@ -45,8 +45,8 @@ private:
     QTimer* timer5;
     QTimer* timer6;
 
-    bool esc_pressed;
-    QPushButton* c[40];
+    bool esc_pressed;//是否在选择关卡界面
+    QPushButton* c[40];//选关按钮
 
     bool toolExist;
     int toolx,tooly;
@@ -82,7 +82,7 @@ public slots:
     void bulletMove();
     void refresh();
     void createTool();
-    void setgate();
+    void setgate();//选择关卡
 
 };
 #endif // WIDGET_H
