@@ -46,8 +46,7 @@ private:
     QTimer* timer6;
 
     bool esc_pressed;
-    QPushButton* c1;
-    QPushButton* c2;
+    QPushButton* c[40];
 
     bool toolExist;
     int toolx,tooly;
@@ -83,8 +82,7 @@ public slots:
     void bulletMove();
     void refresh();
     void createTool();
-    void setgate1();
-    void setgate2();
+    void setgate();
 
 };
 #endif // WIDGET_H

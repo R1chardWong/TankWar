@@ -26,18 +26,19 @@ Widget::Widget(QWidget *parent)
     ice = resizePic(ice,BASESIZE,BASESIZE);
 
     esc_pressed = true;
-    c1 = new QPushButton("第一关",this);
-    c1->move(100,100);
-    c1->resize(150,50);
-    c1->setStyleSheet("background-color:white");
-    c1->setVisible(false);
-    c2 = new QPushButton("第二关",this);
-    c2->move(350,100);
-    c2->resize(150,50);
-    c2->setStyleSheet("background-color:white");
-    c2->setVisible(false);
-    connect(c1,SIGNAL(clicked()),this,SLOT(setgate1()));
-    connect(c2,SIGNAL(clicked()),this,SLOT(setgate2()));
+    for(int i = 1;i <= 35;++i)
+    {
+        c[i] = new QPushButton(QString::number(i),this);
+        c[i]->resize(75,50);
+        c[i]->setStyleSheet("background-color:white");
+        c[i]->setVisible(false);
+        connect(c[i],SIGNAL(clicked()),this,SLOT(setgate()));
+        int arrange_h = 10 + 70 * ((i - 1) / 5 + 1);
+        int arrange_w = 90 * ((i - 1) % 5 + 1);
+        c[i]->move(arrange_w,arrange_h);
+    }
+
+
 
     timer1 = new QTimer(this);
     timer2 = new QTimer(this);
@@ -312,23 +313,6 @@ void Widget::createEnemy()
     cursor%=18;
 }
 
-void Widget::setgate1()
-{
-    gate = 1;
-    esc_pressed = false;
-    c1->setVisible(false);
-    c2->setVisible(false);
-}
-
-void Widget::setgate2()
-{
-    gate = 2;
-    esc_pressed = false;
-    c1->setVisible(false);
-    c2->setVisible(false);
-}
-
-
 void Widget::loadMap()
 {
     std::ifstream file;
@@ -422,9 +406,10 @@ void Widget::drawStart()
 
 void Widget::drawmenu()
 {
+
     this->setStyleSheet("background-color:gray;");
-    c1->setVisible(true);
-    c2->setVisible(true);
+    for(int i = 1;i <= 35;i++)
+        c[i]->setVisible(true);
 }
 
 void Widget::paintEvent(QPaintEvent *)
@@ -579,5 +564,22 @@ void Widget::gameOver()
     {
         this->close();
         exit(0);
+    }
+}
+
+void Widget::setgate()
+{
+    for(int i = 1;i <= 35;++i)
+    {
+        if(c[i]->hasFocus())
+        {
+            enemies.clear();
+            gate = i;
+            esc_pressed = false;
+            for(int j = 1;j <= 35;++j)
+                c[j]->setVisible(false);
+            init();
+            return;
+        }
     }
 }
