@@ -104,6 +104,7 @@ void Widget::keyPressEvent(QKeyEvent *event)
     {
         return;
     }
+    //WASD移动,j射击
     if(event->key()==Qt::Key::Key_W)
     {
         role1.setDir(direct::up);
@@ -151,13 +152,13 @@ void Widget::collisionCheck()
     //玩家子弹和敌方子弹碰撞检测
     for(auto& enemy:enemies)
     {
-        if(true==role1.bullet.rect.intersects(enemy.bullet.rect))
+        if(true==role1.bullet.rect.intersects(enemy.bullet.rect))//敌方子弹与玩家子弹碰撞抵消
         {
             role1.bullet.setActive(false);
             enemy.bullet.setActive(false);
             break;
         }
-        else if(true==campRect.intersects(enemy.bullet.rect)||true==campRect.intersects(role1.bullet.rect))
+        else if(true==campRect.intersects(enemy.bullet.rect)||true==campRect.intersects(role1.bullet.rect))//大本营被子弹击中,游戏失败
         {
 
             camp.load((rootdir+"pic\\camp0.jpg").c_str());
@@ -210,7 +211,7 @@ void Widget::nextGate()
         exit(1);
     }
     gate++;
-    role1.speed=6;
+    role1.speed=6;//进入下一关,会重置玩家速度
     init();
 }
 
@@ -283,7 +284,7 @@ void Widget::bulletMove()
 }
 
 void Widget::refresh()
-{
+{//在刷新的同时执行碰撞检测和道具拾取检测
     collisionCheck();
     toolPicked();
     if(enemyNum<=0)
@@ -474,8 +475,8 @@ void Widget::paintEvent(QPaintEvent *)
 
 
 void Widget::createTool()
-{
-    if (toolExist)
+{//随机生成一个道具
+    if (toolExist)//保持场上至多有一个道具
         return;
     toolExist=1;
     int emptyblock=0;
@@ -499,7 +500,7 @@ void Widget::createTool()
                 sx=i;sy=j;break;
             }
         }
-    toolType=(sx+sy)%2;
+    toolType=(sx+sy)%2;//随机生成加速道具或者血包
     map[sx][sy]='6';
     if (toolType==1)
     {
@@ -522,13 +523,13 @@ void Widget::toolPicked()
     if (toolExist)
     {
         if (abs(role1.rect.x()-toolRect.x())<=35 && abs(role1.rect.y()-toolRect.y())<=35)
-        {
+        {//当玩家与道具的x,y坐标相距足够小时，判定玩家拾取道具
             switch (toolType)
             {
                 case 1:
                     role1.speed+=3;
                     if (role1.speed>12)
-                        role1.speed=12;//不然太快了
+                        role1.speed=12;//速度不得超过上限，不然太快了影响游戏体验
                     break;
                 case 0:
                     life++;
