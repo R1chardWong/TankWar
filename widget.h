@@ -48,13 +48,13 @@ private:
     bool esc_pressed;//是否在选择关卡界面
     QPushButton* c[40];//选关按钮
 
-    bool toolExist;
-    int toolx,tooly;
+    bool toolExist;//记录地图中是否已经有道具存在
+    int toolx,tooly;//道具的坐标
     int cursor;
     QList<Enemy> enemies;
     int enemyNum;
     int life;
-    int gate;
+    int gate;//当前关卡数
     int start;
     void createEnemy();
 protected:
