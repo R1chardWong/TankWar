@@ -9,7 +9,7 @@ class toolBase//道具基类
 {
 public:
     QPixmap toolLook;//道具外观
-    QRect rect;
+    QRect rect;//道具矩形变量
 
     toolBase();
 };
