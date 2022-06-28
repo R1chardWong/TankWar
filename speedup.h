@@ -4,7 +4,7 @@
 #include <QPixmap>
 #include <QPainter>
 #include <toolbase.h>
-
+//加速道具
 class speedUP : public toolBase
 {
 public:
