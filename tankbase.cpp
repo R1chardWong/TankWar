@@ -6,13 +6,14 @@ void tankBase::shot()
     //子弹已经射出就 return
     if(bullet.getActive() == true)
         return;
-
-//    bullet.bump=false;
-    bullet.setActive(true);
+    
+    bullet.setActive(true);//如果没有射出子弹，就此时射出
     bullet.setDir(dir);
+    
+    //设置偏移量——坦克边缘到子弹边缘的距离
+    int deviation = (SIZE-bullet.w)/2;
 
-    int deviation = (SIZE-bullet.w)/2;//弹道与坦克边界的偏移量
-
+    //不同方向射出bullet
     if(dir == direct::up)
     {
         bullet.rect.setRect(rect.x()+deviation,rect.y(),bullet.w,bullet.h);
@@ -29,14 +30,11 @@ void tankBase::shot()
     {
         bullet.rect.setRect(rect.right()-bullet.h,rect.y()+deviation,bullet.h,bullet.w);
     }
-//    if(bullet.rect.x()==0||bullet.rect.y()==0||bullet.rect.x()>=13*SIZE||bullet.rect.y()>=13*SIZE)
-//    {
-//        bullet.busy=false;
-//    }
 }
 
 void tankBase::move()
 {
+    //获取坦克的坐标
     int x = rect.x();
     int y = rect.y();
     if(dir == direct::up)
@@ -55,10 +53,9 @@ void tankBase::move()
     {
         x += speed;
     }
-    if(canReachable(x,y,this->dir))
+    if(canReachable(x,y,this->dir))//如果能到达x,y
     {
         rect.moveTo(x,y);
-//        qDebug()<<"move"<<rect.x()<<" "<<rect.y();
     }
 }
 
@@ -118,7 +115,8 @@ bool tankBase::canReachable(int x, int y,direct dir)
     y /= BASESIZE;
     int x1(0);
     int y1(0);
-    if(dir==direct::up)
+    //偏移量的设置
+    if(dir==direct::up)//上的方向的话，
     {
         x1 = x + 1;
         y1 = y;
@@ -143,17 +141,15 @@ bool tankBase::canReachable(int x, int y,direct dir)
     //判断是否越界
     if(x<0 || x1<0 || x>25 || x1>25 || y<0 || y1<0 || y>25 || y1>25)
     {
-//        qDebug()<<"越界"<<x<<" "<<y;
         return false;
     }
-//    判断是否有障碍物
+    //判断是否有障碍物
     else if(map[y][x]<='2'&&map[y1][x1]<='2')//注意行和列与x,y的关系
     {
         return true;
     }
     else
     {
-//        qDebug()<<"障碍";
         return false;
     }
 }
