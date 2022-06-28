@@ -4,7 +4,7 @@
 #include <QPixmap>
 #include <QPainter>
 #include <toolbase.h>
-
+//血瓶,拾取可增加一条命
 class moreLife : public toolBase
 {
 public:
